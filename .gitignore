@@ -1,0 +1,17 @@
+# Archivos basura del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+
+# Variables de entorno (por si algún día agregás algo con claves)
+.env
+.env.*
+
+# Versiones originales pesadas que no van en la web
+*.psd
+*.ai
+*.fig

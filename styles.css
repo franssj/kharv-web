@@ -130,7 +130,7 @@ h1 em{color:inherit}
 /* ---------- Secciones ---------- */
 .sec{padding:clamp(72px,11vw,140px) 0;background:rgba(10,10,12,.4)}
 .sec + .sec{border-top:1px solid var(--line)}
-.sec--dark{background:radial-gradient(45% 60% at 50% 0%,rgba(139,111,214,.2),transparent 75%),rgba(17,16,21,.6)}
+.sec--dark{background:rgba(10,10,12,.4)}
 
 .list{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);column-gap:56px;border-top:1px solid var(--line)}
 .list li{display:flex;align-items:center;gap:16px;padding:22px 0;border-bottom:1px solid var(--line);font-size:1.15rem}
