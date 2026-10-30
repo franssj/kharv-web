@@ -71,8 +71,8 @@ h1 em{color:inherit}
 /* =====================================================================
    HEADER
    Escritorio: links centrados en un solo bloque con un hueco para el logo
-   (logo al centro, botón pegado a la derecha, ambos fuera del flujo).
-   Celular/tablet: dos filas (logo + botón / secciones).
+   (logo al centro, botón a la derecha y idioma a la izquierda, fuera del flujo).
+   Celular/tablet: dos filas (logo + idioma + botón / secciones).
    ===================================================================== */
 .hdr{position:fixed;inset:0 0 auto;z-index:50;padding-top:env(safe-area-inset-top);border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
 .hdr.is-scrolled{background:rgba(10,10,12,.96);border-color:var(--line)}
@@ -83,7 +83,6 @@ h1 em{color:inherit}
   --g:clamp(24px,3.8vw,80px);   /* aire entre links de un mismo grupo */
   --s:clamp(36px,5.5vw,130px);  /* aire entre el logo y cada grupo */
 }
-.hdr__toggle{display:none}  /* ya no se usa la hamburguesa (podés borrar el <button> del HTML) */
 
 .hdr__logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;line-height:0}
 .hdr__logo img{height:26px;width:auto}
@@ -101,7 +100,20 @@ h1 em{color:inherit}
   transform:scaleX(0);transform-origin:left;opacity:0;transition:transform .35s ease,opacity .35s ease}
 .nav a.is-active::after{transform:scaleX(1);opacity:1}
 
-/* Celular y tablet: fila 1 = logo + Escribime, fila 2 = todas las secciones */
+/* Selector de idioma (banderas) */
+.lang{display:flex;align-items:center;gap:6px}
+.lang__btn{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid transparent;border-radius:50%;background:none;cursor:pointer;opacity:.5;transition:opacity .2s,border-color .2s}
+.lang__btn svg{display:block;width:22px;height:22px;border-radius:50%}
+.lang__btn:hover{opacity:.85}
+.lang__btn.is-on{opacity:1;border-color:var(--violet)}
+.lang__btn:focus-visible{outline:2px solid var(--lav);outline-offset:2px}
+
+/* Escritorio: las banderas van en la punta izquierda, enfrentadas al botón */
+@media(min-width:1241px){
+  .lang{position:absolute;left:0;top:50%;transform:translateY(-50%)}
+}
+
+/* Celular y tablet: fila 1 = logo + banderas + Escribime, fila 2 = todas las secciones */
 @media(max-width:1240px){
   html{scroll-padding-top:104px}
   .hdr__in{flex-wrap:wrap;row-gap:0;min-height:0;padding-top:10px;width:min(1120px,90%)}
@@ -109,14 +121,21 @@ h1 em{color:inherit}
   .hdr__logo{position:static;transform:none;order:0}
   .hdr__logo img{height:24px}
 
-  .hdr__in .btn--sm{position:static;transform:none;order:1;margin-left:auto;min-height:36px;padding:6px 16px;font-size:.72rem}
+  .lang{order:1;margin-left:auto}
 
-  .nav{order:2;flex-basis:100%;width:100%;margin:0;justify-content:space-between;gap:20px;
+  .hdr__in .btn--sm{position:static;transform:none;order:2;margin-left:12px;min-height:36px;padding:6px 16px;font-size:.72rem}
+
+  .nav{order:3;flex-basis:100%;width:100%;margin:0;justify-content:space-between;gap:20px;
     overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .nav::-webkit-scrollbar{display:none}
   .nav a{flex:none;padding:12px 0;font-size:.68rem;letter-spacing:.12em;white-space:nowrap}
   .nav a:nth-child(3){margin-right:0}
   .nav a::after{bottom:6px}
+}
+@media(max-width:480px){
+  .lang{gap:2px}
+  .lang__btn{width:28px;height:28px}
+  .lang__btn svg{width:20px;height:20px}
 }
 
 /* ---------- Hero ---------- */
@@ -130,7 +149,7 @@ h1 em{color:inherit}
 /* ---------- Secciones ---------- */
 .sec{padding:clamp(72px,11vw,140px) 0;background:rgba(10,10,12,.4)}
 .sec + .sec{border-top:1px solid var(--line)}
-.sec--dark{background:rgba(10,10,12,.4)}
+.sec--dark{background:radial-gradient(45% 60% at 50% 0%,rgba(139,111,214,.09),transparent 75%),rgba(17,16,21,.6)}
 
 .list{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);column-gap:56px;border-top:1px solid var(--line)}
 .list li{display:flex;align-items:center;gap:16px;padding:22px 0;border-bottom:1px solid var(--line);font-size:1.15rem}
@@ -155,16 +174,39 @@ h1 em{color:inherit}
   .steps li::before{top:8px;left:-5px}
 }
 
-/* Proyecto */
-.proj{display:grid;gap:48px;align-items:center}
-@media(min-width:900px){.proj{grid-template-columns:1fr 1.25fr}}
+/* ---------- Proyecto destacado: texto a la izquierda, dispositivos a la derecha ---------- */
+.proj{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:clamp(40px,5vw,72px);align-items:center}
+.proj__text{max-width:none}
 .chips{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 32px;padding:0}
 .chips li{padding:6px 14px;border:1px solid var(--line);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-.browser{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#17161B;box-shadow:0 8px 24px rgba(0,0,0,.25)}
-.browser__bar{display:flex;gap:7px;padding:12px 14px;background:#141318}
-.browser__bar i{width:9px;height:9px;border-radius:50%;background:#34323B}
-.browser img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;background:#1B1A20}
 @media(max-width:480px){.chips li{padding:5px 10px;letter-spacing:.14em}}
+
+/* Todo se mide en cqw (ancho del contenedor): escala igual en cualquier pantalla.
+   Imágenes: PC 1280×800, tablet 768×1024 (3:4), celular 390×844. */
+.devices{position:relative;width:100%;aspect-ratio:100/71;container-type:inline-size}
+.browser,.tablet,.phone{position:absolute;margin:0;background:#0B0B0E;
+  border:1px solid rgba(241,235,224,.14);
+  box-shadow:0 2.4cqw 5cqw -1cqw rgba(0,0,0,.7)}
+
+/* PC: ventana de navegador */
+.browser{left:0;top:0;width:78cqw;overflow:hidden;border-radius:1.2cqw;background:#15141A}
+.browser__bar{display:flex;gap:.7cqw;padding:1.1cqw 1.5cqw;background:#121117;border-bottom:1px solid rgba(241,235,224,.07)}
+.browser__bar i{width:.9cqw;height:.9cqw;border-radius:50%;background:#2E2C36}
+.browser img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
+
+/* Tablet y celular: marco fino, esquinas parejas, la pantalla llena todo el marco */
+.tablet,.phone{padding:.8cqw;z-index:2}
+.tablet img,.phone img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+
+.tablet{left:47cqw;top:27cqw;width:31cqw;aspect-ratio:3/4;border-radius:2.2cqw}
+.tablet img{border-radius:1.5cqw}
+
+.phone{left:78cqw;top:27cqw;width:19.08cqw;aspect-ratio:9/19.5;border-radius:3cqw;z-index:3}
+.phone img{border-radius:2.3cqw}
+@media(max-width:900px){
+  .proj{grid-template-columns:1fr;gap:48px}
+  .devices{max-width:640px}
+}
 
 /* Quién soy */
 .about{display:grid;gap:56px;align-items:center}
@@ -199,6 +241,7 @@ img.is-broken{visibility:hidden}
 .ftr .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 .ftr a{text-decoration:none}
 .ftr a:hover{color:var(--ink)}
+.ftr b{font-weight:500;color:var(--ink)}
 @media(max-width:600px){
   .ftr{letter-spacing:.18em}
   .ftr .wrap{flex-direction:column;align-items:flex-start}
@@ -214,6 +257,7 @@ img.is-broken{visibility:hidden}
   .proj .btn{width:100%}
   .btn{font-size:.8rem;letter-spacing:.16em;outline-offset:3px}
   .btn:hover{outline-offset:4px}
+  .btn--sm{font-size:.72rem}
 }
 
 /* ---------- Entrada suave (la activa script.js) ---------- */
@@ -229,4 +273,3 @@ img.is-broken{visibility:hidden}
   .js [data-r]{opacity:1;transform:none;transition:none}
   .nav a::after{transition:none}
 }
-.ftr b{font-weight:500;color:var(--ink)}
