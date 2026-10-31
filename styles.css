@@ -201,7 +201,7 @@ h1 em{color:inherit}
 .tablet{left:47cqw;top:27cqw;width:31cqw;aspect-ratio:3/4;border-radius:2.2cqw}
 .tablet img{border-radius:1.5cqw}
 
-.phone{left:78cqw;top:27cqw;width:19.08cqw;aspect-ratio:9/19.5;border-radius:3cqw;z-index:3}
+.phone{left:76cqw;top:20.6cqw;width:22cqw;aspect-ratio:9/19.5;border-radius:3cqw;z-index:3}
 .phone img{border-radius:2.3cqw}
 @media(max-width:900px){
   .proj{grid-template-columns:1fr;gap:48px}
