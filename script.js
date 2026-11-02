@@ -2,49 +2,64 @@
    CONFIGURACIÓN (solo valores públicos)
    WhatsApp: número con código de país y sin signos. Ej. Argentina: 5493484000000
    Si el número no tiene entre 10 y 15 dígitos (por ejemplo, si quedan letras
-   o símbolos), el botón de WhatsApp queda oculto.
+   o símbolos), los botones de WhatsApp quedan ocultos.
    ===================================================================== */
 const WHATSAPP_NUMBER = '542931411319';
-const WHATSAPP_MSG = 'Hola KHARV, quisiera consultar por una página web.';
 
 /* Mail: al tocar el botón se abre un mensaje nuevo con asunto y texto listos */
 const MAIL_TO = 'kharv.web@gmail.com';
-const MAIL_SUBJECT = 'Consulta por una página web';
-const MAIL_BODY = 'Hola KHARV,\n\nQuisiera consultar por una página web.\n\nMi nombre:\nMi idea:\n\nGracias.';
+
+/* Mensajes precargados de WhatsApp y mail, en cada idioma del sitio */
+const MESSAGES = {
+  es: {
+    wa: 'Hola KHARV, quisiera consultar por una página web.',
+    subject: 'Consulta por una página web',
+    body: 'Hola KHARV,\n\nQuisiera consultar por una página web.\n\nMi nombre:\nMi idea:\n\nGracias.'
+  },
+  en: {
+    wa: 'Hello KHARV, I would like to inquire about a website.',
+    subject: 'Website inquiry',
+    body: 'Hello KHARV,\n\nI would like to inquire about a website.\n\nMy name:\nMy idea:\n\nThank you.'
+  }
+};
 
 (() => {
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  /* ---------- WhatsApp ----------
-     Todos los botones con data-wa (inicio y contacto) abren el chat directo. */
+  /* ---------- WhatsApp y mail ----------
+     Todos los botones con data-wa (header, inicio y contacto) abren el chat directo.
+     Mail: en computadora abre el redactor de Gmail en una pestaña nueva;
+     en celular usa mailto:, que abre la app de mail que tenga el teléfono.
+     i18n.js avisa cada cambio de idioma con el evento 'kharv:lang'. */
   const waOk = /^\d{10,15}$/.test(WHATSAPP_NUMBER);
-  $$('[data-wa]').forEach(a => {
-    if (waOk) {
-      a.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`;
+  const desktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const mail = $('#mailBtn');
+
+  const setContact = lang => {
+    const m = MESSAGES[lang] || MESSAGES.es;
+    $$('[data-wa]').forEach(a => {
+      if (!waOk) { a.hidden = true; return; }
+      a.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(m.wa)}`;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
-    } else a.hidden = true;
-  });
-
-  /* ---------- Mail ----------
-     En computadora abre el redactor de Gmail en una pestaña nueva.
-     En celular usa mailto:, que abre la app de mail que tenga el teléfono. */
-  const mail = $('#mailBtn');
-  if (mail) {
-    const subject = encodeURIComponent(MAIL_SUBJECT);
-    const body = encodeURIComponent(MAIL_BODY);
-    mail.href = `mailto:${MAIL_TO}?subject=${subject}&body=${body}`;
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      mail.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(MAIL_TO)}&su=${subject}&body=${body}`;
-      mail.target = '_blank';
-      mail.rel = 'noopener noreferrer';
+    });
+    if (mail) {
+      const subject = encodeURIComponent(m.subject);
+      const body = encodeURIComponent(m.body);
+      if (desktop) {
+        mail.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(MAIL_TO)}&su=${subject}&body=${body}`;
+        mail.target = '_blank';
+        mail.rel = 'noopener noreferrer';
+      } else mail.href = `mailto:${MAIL_TO}?subject=${subject}&body=${body}`;
     }
-  }
+  };
+  setContact('es');
+  document.addEventListener('kharv:lang', e => setContact(e.detail));
 
   /* ---------- Imágenes que no cargan: se ocultan y queda el fondo del marco ---------- */
-  $$('.portrait img, .browser img').forEach(img => {
+  $$('main img').forEach(img => {
     const hide = () => img.classList.add('is-broken');
     if (img.complete && img.naturalWidth === 0) hide();
     img.addEventListener('error', hide);
@@ -56,26 +71,26 @@ const MAIL_BODY = 'Hola KHARV,\n\nQuisiera consultar por una página web.\n\nMi 
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* ---------- Menú móvil (hamburguesa) ----------
-     Se abre y cierra con el botón; se cierra al elegir un link, con Escape,
-     al tocar fuera del header o al pasar a una pantalla ancha. */
-  const toggle = $('#navToggle');
-  if (toggle) {
-    const setMenu = open => {
-      hdr.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-    };
-    toggle.addEventListener('click', () => setMenu(!hdr.classList.contains('is-open')));
-    $$('.nav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && hdr.classList.contains('is-open')) { setMenu(false); toggle.focus(); }
-    });
-    document.addEventListener('click', e => {
-      if (hdr.classList.contains('is-open') && !hdr.contains(e.target)) setMenu(false);
-    });
-    window.matchMedia('(min-width: 821px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
-  }
+  /* ---------- Menú en celular y tablet: fila deslizable ----------
+     Marca si quedan links ocultos a cada lado (para el desvanecido del borde). */
+  const nav = $('#nav');
+  const edges = () => {
+    const max = nav.scrollWidth - nav.clientWidth;
+    nav.classList.toggle('has-more-start', nav.scrollLeft > 4);
+    nav.classList.toggle('has-more-end', nav.scrollLeft < max - 4);
+  };
+  edges();
+  nav.addEventListener('scroll', edges, { passive: true });
+  window.addEventListener('resize', edges, { passive: true });
+  if (document.fonts) document.fonts.ready.then(edges);
+
+  /* Si el link de la sección activa quedó fuera de la fila, la desliza hasta mostrarlo */
+  const keepInView = a => {
+    if (nav.scrollWidth <= nav.clientWidth) return;
+    const n = nav.getBoundingClientRect(), r = a.getBoundingClientRect();
+    if (r.left < n.left) nav.scrollBy({ left: r.left - n.left - 24 });
+    else if (r.right > n.right) nav.scrollBy({ left: r.right - n.right + 24 });
+  };
 
   if (!('IntersectionObserver' in window)) return;
 
@@ -93,7 +108,7 @@ const MAIL_BODY = 'Hola KHARV,\n\nQuisiera consultar por una página web.\n\nMi 
     links.forEach((a, id) => {
       const on = id === e.target.id;
       a.classList.toggle('is-active', on);
-      if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      if (on) { a.setAttribute('aria-current', 'true'); keepInView(a); } else a.removeAttribute('aria-current');
     });
   }), { rootMargin: '-45% 0px -50% 0px' });
   $$('main section[id]').forEach(s => spy.observe(s));

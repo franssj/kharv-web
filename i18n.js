@@ -3,111 +3,152 @@
    El HTML queda en español. Este archivo guarda el original, lo reemplaza
    por el inglés al elegir EN y lo restaura al volver a ES.
    La elección se recuerda en el navegador (localStorage).
+
+   Cada texto traducible lleva una clave en el HTML:
+     data-i18n="clave"          → reemplaza el texto
+     data-i18n-html="clave"     → reemplaza el HTML (si lleva <em>, <br> o <b>)
+     data-i18n-attr="alt:clave" → reemplaza atributos (varios: "alt:a; title:b")
+   Si una clave del HTML no existe acá, el texto queda en español y se avisa en la consola.
    ===================================================================== */
 (() => {
   'use strict';
 
   const KEY = 'kharv-lang';
 
-  /* [selector, texto en inglés, modo]
-     modo: 'text' (por defecto), 'html' (si el texto lleva <em>, <br> o <b>) o el nombre de un atributo.
-     Si el selector encuentra varios elementos, el texto es una lista en el mismo orden de la página. */
-  const T = [
+  const EN = {
     /* ---------- <head> ---------- */
-    ['title', 'KHARV | Everything you imagine can be created.'],
-    ['meta[name="description"]', 'Custom web design and development. I turn ideas into digital experiences that combine identity, functionality and security.', 'content'],
-    ['meta[property="og:title"]', 'KHARV | Everything you imagine can be created.', 'content'],
-    ['meta[property="og:description"]', 'Design, development and security to turn ideas into digital experiences.', 'content'],
+    'meta.title': 'KHARV · Custom web design and development | Everything you imagine can be created.',
+    'meta.desc': 'Custom web design and development: websites with their own identity, adapted to any device and built with security best practices.',
+    'og.title': 'KHARV | Everything you imagine can be created.',
+    'og.desc': 'Design, development and security to turn ideas into digital experiences.',
 
     /* ---------- Header ---------- */
-    ['#nav', 'Main', 'aria-label'],
-    ['.hdr__logo img', 'KHARV, home', 'alt'],
-    ['.nav a', ['Services', 'Security', 'Process', 'Project', 'About me', 'Contact']],
-    ['.hdr__in .btn--sm', 'Message me'],
-    ['.lang', 'Language', 'aria-label'],
+    'skip': 'Skip to content',
+    'logo.alt': 'KHARV, home',
+    'nav.label': 'Main',
+    'nav.svc': 'Services',
+    'nav.sec': 'Security',
+    'nav.proc': 'Process',
+    'nav.proj': 'Project',
+    'nav.about': 'About me',
+    'nav.contact': 'Contact',
+    'hdr.wa': 'Message me',
+    'lang.label': 'Language',
 
     /* ---------- Inicio ---------- */
-    ['#inicio .eyebrow', 'Design · Development · Security'],
-    ['#inicio h1', 'Everything you imagine, <em>can be created.</em>', 'html'],
-    ['#inicio .lead', 'I design and develop custom websites, combining visual identity, functionality and technology to turn ideas into digital experiences.'],
-    ['#inicio .note', 'Every idea has a shape. Every detail, a purpose.'],
+    'hero.eyebrow': 'Design · Development · Security',
+    'hero.title': 'Everything you imagine, <em>can be created.</em>',
+    'hero.lead': 'I design and develop custom websites, combining visual identity, functionality and technology to turn ideas into digital experiences.',
+    'hero.note': 'Every idea has a shape. Every detail, a purpose.',
+    'hero.wa': 'Message me on WhatsApp',
+    'hero.proj': 'See project',
 
     /* ---------- Servicios ---------- */
-    ['#servicios .tag', 'Services'],
-    ['#servicios h2', 'Every idea needs <em>its own shape.</em>', 'html'],
-    ['#servicios .lead', 'I build custom digital solutions, taking care of every aspect of the project: from its visual identity to how it works.'],
-    ['#servicios .list li', [
-      'Web design with its own identity',
-      'Custom website development',
-      'Experiences adapted to phones, tablets and computers',
-      'Interactions and dynamic elements',
-      'Forms and contact channels',
-      'Clean, maintainable code',
-      'Security best practices'
-    ]],
+    'svc.tag': 'Services',
+    'svc.title': 'Every idea needs <em>its own shape.</em>',
+    'svc.lead': 'I design and develop custom websites for professionals, small businesses and brands that want to present themselves online with their own identity. Each project is shaped around what you need to communicate.',
+    'svc.make.t': 'What I can create',
+    'svc.make.1': 'Presentation websites for professionals and small businesses',
+    'svc.make.2': 'Pages to showcase a service, a product or an offering',
+    'svc.make.3': 'Multi-section websites with all the information about your project',
+    'svc.make.4': 'Websites with contact, inquiry or enrollment forms',
+    'svc.inc.t': 'What every website includes',
+    'svc.inc.1': 'Web design with its own identity',
+    'svc.inc.2': 'Custom website development',
+    'svc.inc.3': 'Experiences adapted to phones, tablets and computers',
+    'svc.inc.4': 'Clean, maintainable code',
+    'svc.inc.5': 'Security best practices',
+    'svc.add.t': 'What can be added',
+    'svc.add.1': 'Interactions and dynamic elements',
+    'svc.add.2': 'Multi-step forms that send the information by email',
+    'svc.add.3': 'Direct contact channels via WhatsApp and email',
+    'svc.add.4': 'Versions of the website in more than one language',
 
     /* ---------- Seguridad ---------- */
-    ['#seguridad .tag', 'Security'],
-    ['#seguridad h2', 'Trust is also built <em>from the inside.</em>', 'html'],
-    ['#seguridad .lead', 'A good digital experience doesn’t end at what you see. How each site is built matters too. That’s why security and best practices are part of development from day one.'],
-    ['#seguridad .list li', [
-      'Secure development best practices',
-      'Data validation and form protection',
-      'Measures to reduce unwanted automated submissions',
-      'Secure connections over HTTPS'
-    ]],
+    'sec.tag': 'Security',
+    'sec.title': 'Trust is also built <em>from the inside.</em>',
+    'sec.lead': 'A good digital experience doesn’t end at what you see. How each site is built matters too. That’s why security and best practices are part of development from day one.',
+    'sec.1': 'Secure development best practices',
+    'sec.2': 'Data validation and form protection',
+    'sec.3': 'Measures to reduce unwanted automated submissions',
+    'sec.4': 'Secure connections over HTTPS',
 
     /* ---------- Proceso ---------- */
-    ['#proceso .tag', 'Process'],
-    ['#proceso h2', 'From an idea <br> to <em>making it real.</em>', 'html'],
-    ['#proceso .lead', 'Every project has its own path. I work on each stage to turn an initial idea into a functional digital experience with its own identity.'],
-    ['#proceso .steps b', ['Conversation', 'Design', 'Development', 'Launch']],
-    ['#proceso .steps span', [
-      'Getting to know your idea and understanding what you need.',
-      'Defining the visual identity and the structure.',
-      'Turning the design into a working site.',
-      'Checking the details and putting the project online.'
-    ]],
+    'proc.tag': 'Process',
+    'proc.title': 'From an idea <br> to <em>making it real.</em>',
+    'proc.lead': 'Every project has its own path. I work on each stage to turn an initial idea into a functional digital experience with its own identity.',
+    'proc.1.t': 'Conversation',
+    'proc.1.d': 'Getting to know your idea and understanding what you need.',
+    'proc.2.t': 'Design',
+    'proc.2.d': 'Defining the visual identity and the structure.',
+    'proc.3.t': 'Development',
+    'proc.3.d': 'Turning the design into a working site.',
+    'proc.4.t': 'Launch',
+    'proc.4.d': 'Checking the details and putting the project online.',
+    'proc.5.t': 'Ongoing support',
+    'proc.5.d': 'Assistance and maintenance after launch, arranged according to each project.',
 
     /* ---------- Proyecto ---------- */
-    ['#proyecto .tag', 'Featured project'],
-    ['#proyecto h2', 'Ideas also become <em>experiences.</em>', 'html'],
-    ['#proyecto .lead', [
-      'Evermore English Academy is a website built for an English teacher, with its own visual identity and an experience designed to present her educational offering.',
-      'It includes a four-step enrollment form that sends the information straight to email.'
-    ]],
-    ['#proyecto .chips li', ['Design', 'Development', 'Forms', 'Security']],
-    ['#proyecto a.btn', 'Explore project'],
-    ['#proyecto .browser img', 'Evermore English Academy on a computer', 'alt'],
-    ['#proyecto .tablet img', 'Evermore English Academy on a tablet', 'alt'],
-    ['#proyecto .phone img', 'Evermore English Academy on a phone', 'alt'],
+    'proj.tag': 'Featured project',
+    'proj.title': 'Ideas also become <em>experiences.</em>',
+    'proj.lead': 'Evermore English Academy is a real project: the website I built for an English teacher who gives private online classes.',
+    'proj.need.t': 'The need',
+    'proj.need.d': 'To present her teaching offering with its own visual identity and to receive enrollments for her classes.',
+    'proj.sol.t': 'The solution',
+    'proj.sol.d': 'A custom website that introduces the teacher, her classes and the way she works, with a four-step enrollment form that sends the information straight to email.',
+    'proj.feat.t': 'Features',
+    'proj.feat.d': 'Details of a responsible adult when the student is under 18, consents, a confirmation with a WhatsApp summary, and a reviews section where each review is checked before it is published.',
+    'proj.val.t': 'The value',
+    'proj.val.d': 'Visitors get to know the offering and can enroll in a single place, and the teacher receives each enrollment with the information she needs to organize the classes.',
+    'proj.chip.1': 'Design',
+    'proj.chip.2': 'Development',
+    'proj.chip.3': 'Forms',
+    'proj.chip.4': 'Security',
+    'proj.btn': 'Explore project',
+    'proj.alt.pc': 'Evermore English Academy on a computer',
+    'proj.alt.tablet': 'Evermore English Academy on a tablet',
+    'proj.alt.phone': 'Evermore English Academy on a phone',
 
     /* ---------- Quién soy ---------- */
-    ['#quien-soy .portrait img', 'Portrait of the person behind KHARV', 'alt'],
-    ['#quien-soy .tag', 'About me'],
-    ['#quien-soy h2', 'Behind every project, <em>a person.</em>', 'html'],
-    ['#quien-soy .lead', 'I’m the person behind KHARV. I work in web design and development, creating digital experiences that combine aesthetics, functionality and technology.'],
-    ['#quien-soy .about__p', [
-      'I’m currently studying the University Technical Degree in Programming at UTN and complementing my training with courses at EducaciónIT.',
-      'I work personally on every project, taking care of each stage of the process to turn ideas into websites designed around each need.'
-    ]],
-    ['#quien-soy .chips li', ['Continuous learning', 'Custom development', 'Personal attention']],
+    'about.alt': 'Portrait of the person behind KHARV',
+    'about.tag': 'About me',
+    'about.title': 'Behind every project, <em>a person.</em>',
+    'about.lead': 'My name is Francisco and I’m the person behind KHARV. I work in web design and development, creating digital experiences that combine aesthetics, functionality and technology.',
+    'about.p1': 'I’m currently studying the University Technical Degree in Programming at UTN and complementing my training with courses at EducaciónIT.',
+    'about.p2': 'I work personally on every project, taking care of each stage of the process to turn ideas into websites designed around each need.',
+    'about.chip.1': 'Continuous learning',
+    'about.chip.2': 'Custom development',
+    'about.chip.3': 'Personal attention',
+
+    /* ---------- Preguntas frecuentes ---------- */
+    'faq.tag': 'FAQ',
+    'faq.title': 'Before we start, <em>a few answers.</em>',
+    'faq.1.q': 'How does a project start?',
+    'faq.1.a': 'With a conversation over WhatsApp or email. You tell me your idea, what you need and what the website is for, and from there we figure out how to shape it.',
+    'faq.2.q': 'What do I need to request a website?',
+    'faq.2.a': 'An idea of what you want to communicate is enough. If you already have a logo, texts or photos, they help; if not, we talk about it in our first conversation.',
+    'faq.3.q': 'Does the website work on phones?',
+    'faq.3.a': 'Yes. Every website is designed and adapted to look and work well on phones, tablets and computers.',
+    'faq.4.q': 'Can I have my own domain?',
+    'faq.4.a': 'Yes. The website can be published with your own domain, for example yourbrand.com. We arrange it during the launch stage.',
+    'faq.5.q': 'Can I request changes after delivery?',
+    'faq.5.a': 'Yes. You can message me to ask for changes or adjustments. The scope of each change is discussed case by case.',
 
     /* ---------- Contacto ---------- */
-    ['#contacto .eyebrow', 'Design · Development · Security'],
-    ['#contacto h2', 'What do you imagine <em>creating?</em>', 'html'],
-    ['#contacto .lead', 'Every great idea starts with a conversation. Tell me what you have in mind and let’s start giving it shape.'],
-    ['#contacto [data-wa]', 'Message me on WhatsApp'],
+    'contact.eyebrow': 'Design · Development · Security',
+    'contact.title': 'What do you imagine <em>creating?</em>',
+    'contact.lead': 'Every great idea starts with a conversation. Tell me what you have in mind and let’s start giving it shape.',
+    'contact.wa': 'Message me on WhatsApp',
 
     /* ---------- Footer ---------- */
-    ['.ftr span', 'Designed and developed by <b>KHARV</b>', 'html']
-  ];
+    'footer.by': 'Designed and developed by <b>KHARV</b>',
 
-  /* Mensajes de WhatsApp y mail en inglés */
-  const EN_MSG = {
-    wa: 'Hello KHARV, I would like to inquire about a website.',
-    subject: 'Website inquiry',
-    body: 'Hello KHARV,\n\nI would like to inquire about a website.\n\nMy name:\nMy idea:\n\nThank you.'
+    /* ---------- Página 404 ---------- */
+    'nf.meta': 'Page not found | KHARV',
+    'nf.tag': 'Error 404',
+    'nf.title': 'This page <em>doesn’t exist.</em>',
+    'nf.lead': 'The link may be misspelled, or the page may no longer be available.',
+    'nf.btn': 'Back to home'
   };
 
   /* ---------- Guardar el original (español) de cada elemento ---------- */
@@ -124,36 +165,17 @@
   };
 
   const nodes = [];
-  T.forEach(([sel, en, mode = 'text']) => {
-    const list = Array.isArray(en) ? en : [en];
-    document.querySelectorAll(sel).forEach((el, i) => {
-      if (list[i] === undefined) return;
-      nodes.push({ el, mode, es: read(el, mode), en: list[i] });
-    });
-  });
-
-  /* ---------- Links de WhatsApp y mail según el idioma ---------- */
-  const setLinks = lang => {
-    const en = lang === 'en';
-    const msg = en ? EN_MSG.wa : (typeof WHATSAPP_MSG !== 'undefined' ? WHATSAPP_MSG : '');
-    const subject = en ? EN_MSG.subject : (typeof MAIL_SUBJECT !== 'undefined' ? MAIL_SUBJECT : '');
-    const body = en ? EN_MSG.body : (typeof MAIL_BODY !== 'undefined' ? MAIL_BODY : '');
-
-    if (typeof WHATSAPP_NUMBER !== 'undefined' && /^\d{10,15}$/.test(WHATSAPP_NUMBER)) {
-      document.querySelectorAll('[data-wa]').forEach(a => {
-        a.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-      });
-    }
-
-    const mail = document.getElementById('mailBtn');
-    if (mail && typeof MAIL_TO !== 'undefined') {
-      const s = encodeURIComponent(subject);
-      const b = encodeURIComponent(body);
-      mail.href = window.matchMedia('(hover: hover) and (pointer: fine)').matches
-        ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(MAIL_TO)}&su=${s}&body=${b}`
-        : `mailto:${MAIL_TO}?subject=${s}&body=${b}`;
-    }
+  const add = (el, mode, key) => {
+    if (!(key in EN)) { console.warn(`i18n: falta la traducción de "${key}"`); return; }
+    nodes.push({ el, mode, es: read(el, mode), en: EN[key] });
   };
+  document.querySelectorAll('[data-i18n]').forEach(el => add(el, 'text', el.dataset.i18n));
+  document.querySelectorAll('[data-i18n-html]').forEach(el => add(el, 'html', el.dataset.i18nHtml));
+  document.querySelectorAll('[data-i18n-attr]').forEach(el =>
+    el.dataset.i18nAttr.split(';').forEach(pair => {
+      const [attr, key] = pair.split(':').map(s => s.trim());
+      if (attr && key) add(el, attr, key);
+    }));
 
   /* ---------- Cambiar de idioma ---------- */
   const buttons = [...document.querySelectorAll('.lang__btn')];
@@ -161,12 +183,13 @@
   const apply = (lang, persist) => {
     nodes.forEach(n => write(n.el, n.mode, lang === 'en' ? n.en : n.es));
     document.documentElement.lang = lang;
-    setLinks(lang);
     buttons.forEach(b => {
       const on = b.dataset.lang === lang;
       b.classList.toggle('is-on', on);
       b.setAttribute('aria-pressed', String(on));
     });
+    /* script.js escucha este aviso para actualizar los mensajes de WhatsApp y mail */
+    document.dispatchEvent(new CustomEvent('kharv:lang', { detail: lang }));
     if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) { /* sin storage: no pasa nada */ } }
   };
 

@@ -5,48 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0A0A0C">
 
-<title>KHARV | Todo lo que imaginás, se puede crear.</title>
+<title data-i18n="meta.title">KHARV · Diseño y desarrollo web a medida | Todo lo que imaginás, se puede crear.</title>
 
-<meta name="description" content="Diseño y desarrollo web a medida. Transformo ideas en experiencias digitales que combinan identidad, funcionalidad y seguridad.">
+<meta name="description" data-i18n-attr="content:meta.desc" content="Diseño y desarrollo web a medida: sitios con identidad propia, adaptados a cualquier dispositivo y construidos con buenas prácticas de seguridad.">
 
-<meta property="og:title" content="KHARV | Todo lo que imaginás, se puede crear.">
-<meta property="og:description" content="Diseño, desarrollo y seguridad para transformar ideas en experiencias digitales.">
+<link rel="canonical" href="https://kharv-web.vercel.app/">
+
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="KHARV">
+<meta property="og:url" content="https://kharv-web.vercel.app/">
+<meta property="og:title" data-i18n-attr="content:og.title" content="KHARV | Todo lo que imaginás, se puede crear.">
+<meta property="og:description" data-i18n-attr="content:og.desc" content="Diseño, desarrollo y seguridad para transformar ideas en experiencias digitales.">
 <meta property="og:locale" content="es_AR">
+<meta property="og:image" content="https://kharv-web.vercel.app/img/og-kharv.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo de KHARV y el lema «Todo lo que imaginás, se puede crear.» sobre un fondo oscuro">
+<meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" type="image/png" href="img/kharv-logo2.png">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link rel="preload" as="image" href="img/fondo-hero.webp" fetchpriority="high">
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap">
 
 <link rel="stylesheet" href="styles.css">
+
+<!-- Datos estructurados (JSON-LD): es un bloque de datos, no se ejecuta, y la CSP no lo bloquea -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://kharv-web.vercel.app/#kharv",
+  "name": "KHARV",
+  "url": "https://kharv-web.vercel.app/",
+  "logo": "https://kharv-web.vercel.app/img/kharv-logo2.png",
+  "image": "https://kharv-web.vercel.app/img/og-kharv.jpg",
+  "slogan": "Todo lo que imaginás, se puede crear.",
+  "description": "Diseño y desarrollo web a medida: sitios con identidad propia, adaptados a cualquier dispositivo y construidos con buenas prácticas de seguridad.",
+  "email": "kharv.web@gmail.com",
+  "founder": { "@type": "Person", "name": "Francisco" },
+  "sameAs": ["https://www.instagram.com/kharv.dev/"],
+  "knowsAbout": ["Diseño web", "Desarrollo web a medida", "Seguridad web"]
+}
+</script>
 </head>
 
 <body>
+
+<a class="skip" href="#main" data-i18n="skip">Saltar al contenido</a>
 
 <header class="hdr" id="hdr">
   <div class="wrap hdr__in">
 
     <a class="hdr__logo" href="#inicio">
-      <img src="img/kharv-logo1.png" alt="KHARV, inicio" width="120" height="28">
+      <img src="img/kharv-logo1.png" alt="KHARV, inicio" data-i18n-attr="alt:logo.alt" width="120" height="28">
     </a>
 
-    <nav class="nav" id="nav" aria-label="Principal">
-      <a href="#servicios">Servicios</a>
-      <a href="#seguridad">Seguridad</a>
-      <a href="#proceso">Proceso</a>
-      <a href="#proyecto">Proyecto</a>
-      <a href="#quien-soy">Quién soy</a>
-      <a href="#contacto">Contacto</a>
+    <nav class="nav" id="nav" aria-label="Principal" data-i18n-attr="aria-label:nav.label">
+      <a href="#servicios" data-i18n="nav.svc">Servicios</a>
+      <a href="#seguridad" data-i18n="nav.sec">Seguridad</a>
+      <a href="#proceso" data-i18n="nav.proc">Proceso</a>
+      <a href="#proyecto" data-i18n="nav.proj">Proyecto</a>
+      <a href="#quien-soy" data-i18n="nav.about">Quién soy</a>
+      <a href="#contacto" data-i18n="nav.contact">Contacto</a>
     </nav>
 
-    <a class="btn btn--sm" data-wa href="#" target="_blank" rel="noopener noreferrer">Escribime</a>
+    <a class="btn btn--sm" data-wa href="#contacto" data-i18n="hdr.wa">Escribime</a>
 
-    <div class="lang" role="group" aria-label="Idioma">
+    <div class="lang" role="group" aria-label="Idioma" data-i18n-attr="aria-label:lang.label">
       <button type="button" class="lang__btn is-on" data-lang="es" aria-pressed="true" aria-label="Español" title="Español">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" fill="#74ACDF"/><rect y="8" width="24" height="8" fill="#fff"/><circle cx="12" cy="12" r="2.2" fill="#F6B40E"/></svg>
       </button>
@@ -65,21 +98,26 @@
 <section class="hero" id="inicio">
   <div class="wrap">
 
-    <p class="eyebrow" data-r>
+    <p class="eyebrow" data-r data-i18n="hero.eyebrow">
       Diseño · Desarrollo · Seguridad
     </p>
 
-    <h1 data-r>
+    <h1 data-r data-i18n-html="hero.title">
       Todo lo que imaginás, <em>se puede crear.</em>
     </h1>
 
-    <p class="lead" data-r>
+    <p class="lead" data-r data-i18n="hero.lead">
       Diseño y desarrollo sitios web a medida, combinando identidad visual, funcionalidad y tecnología para transformar ideas en experiencias digitales.
     </p>
 
-    <p class="note" data-r>
+    <p class="note" data-r data-i18n="hero.note">
       Cada idea tiene una forma. Cada detalle, un propósito.
     </p>
+
+    <div class="cta" data-r>
+      <a class="btn" data-wa href="#contacto" data-i18n="hero.wa">Escribime por WhatsApp</a>
+      <a class="btn btn--ghost" href="#proyecto" data-i18n="hero.proj">Ver proyecto</a>
+    </div>
 
   </div>
 </section>
@@ -90,25 +128,51 @@
 <section class="sec" id="servicios">
   <div class="wrap">
 
-    <p class="tag" data-r>Servicios</p>
+    <p class="tag" data-r data-i18n="svc.tag">Servicios</p>
 
-    <h2 data-r>
+    <h2 data-r data-i18n-html="svc.title">
       Cada idea necesita <em>su propia forma.</em>
     </h2>
 
-    <p class="lead" data-r>
-      Desarrollo soluciones digitales personalizadas, cuidando cada aspecto del proyecto: desde su identidad visual hasta su funcionamiento.
+    <p class="lead" data-r data-i18n="svc.lead">
+      Diseño y desarrollo sitios web a medida para profesionales, emprendimientos y marcas que quieren presentarse en internet con una identidad propia. Cada proyecto se arma según lo que necesitás comunicar.
     </p>
 
-    <ul class="list">
-      <li data-r>Diseño web con identidad propia</li>
-      <li data-r>Desarrollo de sitios web a medida</li>
-      <li data-r>Experiencias adaptadas a celulares, tablets y computadoras</li>
-      <li data-r>Interacciones y elementos dinámicos</li>
-      <li data-r>Formularios y canales de contacto</li>
-      <li data-r>Código organizado y mantenible</li>
-      <li data-r>Buenas prácticas de seguridad</li>
-    </ul>
+    <!-- Qué puedo crear · Qué incluye · Qué se puede sumar -->
+    <div class="svc">
+
+      <div data-r>
+        <h3 data-i18n="svc.make.t">Qué puedo crear</h3>
+        <ul class="list list--1">
+          <li data-i18n="svc.make.1">Sitios de presentación para profesionales y emprendimientos</li>
+          <li data-i18n="svc.make.2">Páginas para dar a conocer un servicio, un producto o una propuesta</li>
+          <li data-i18n="svc.make.3">Sitios de varias secciones, con toda la información de tu proyecto</li>
+          <li data-i18n="svc.make.4">Sitios con formularios de contacto, consulta o inscripción</li>
+        </ul>
+      </div>
+
+      <div data-r>
+        <h3 data-i18n="svc.inc.t">Qué incluye cada sitio</h3>
+        <ul class="list list--1">
+          <li data-i18n="svc.inc.1">Diseño web con identidad propia</li>
+          <li data-i18n="svc.inc.2">Desarrollo de sitios web a medida</li>
+          <li data-i18n="svc.inc.3">Experiencias adaptadas a celulares, tablets y computadoras</li>
+          <li data-i18n="svc.inc.4">Código organizado y mantenible</li>
+          <li data-i18n="svc.inc.5">Buenas prácticas de seguridad</li>
+        </ul>
+      </div>
+
+      <div data-r>
+        <h3 data-i18n="svc.add.t">Qué se puede sumar</h3>
+        <ul class="list list--1">
+          <li data-i18n="svc.add.1">Interacciones y elementos dinámicos</li>
+          <li data-i18n="svc.add.2">Formularios por etapas, con envío de la información al correo</li>
+          <li data-i18n="svc.add.3">Canales de contacto directos por WhatsApp y correo</li>
+          <li data-i18n="svc.add.4">Versiones del sitio en más de un idioma</li>
+        </ul>
+      </div>
+
+    </div>
 
   </div>
 </section>
@@ -119,21 +183,21 @@
 <section class="sec sec--dark" id="seguridad">
   <div class="wrap">
 
-    <p class="tag" data-r>Seguridad</p>
+    <p class="tag" data-r data-i18n="sec.tag">Seguridad</p>
 
-    <h2 data-r>
+    <h2 data-r data-i18n-html="sec.title">
       La confianza también se construye <em>desde adentro.</em>
     </h2>
 
-    <p class="lead" data-r>
+    <p class="lead" data-r data-i18n="sec.lead">
       Una buena experiencia digital no termina en lo que se ve. También importa cómo está construido cada sitio. Por eso, la seguridad y las buenas prácticas forman parte del desarrollo desde el primer momento.
     </p>
 
     <ul class="list list--1">
-      <li data-r>Buenas prácticas de desarrollo seguro</li>
-      <li data-r>Validación de datos y protección de formularios</li>
-      <li data-r>Medidas para reducir envíos automatizados no deseados</li>
-      <li data-r>Conexiones seguras mediante HTTPS</li>
+      <li data-r data-i18n="sec.1">Buenas prácticas de desarrollo seguro</li>
+      <li data-r data-i18n="sec.2">Validación de datos y protección de formularios</li>
+      <li data-r data-i18n="sec.3">Medidas para reducir envíos automatizados no deseados</li>
+      <li data-r data-i18n="sec.4">Conexiones seguras mediante HTTPS</li>
     </ul>
 
   </div>
@@ -145,36 +209,41 @@
 <section class="sec" id="proceso">
   <div class="wrap">
 
-    <p class="tag" data-r>Proceso</p>
+    <p class="tag" data-r data-i18n="proc.tag">Proceso</p>
 
-    <h2 data-r>
+    <h2 data-r data-i18n-html="proc.title">
       De una idea <br> a <em>hacerla realidad.</em>
     </h2>
 
-    <p class="lead" data-r>
+    <p class="lead" data-r data-i18n="proc.lead">
       Cada proyecto tiene su propio recorrido. Trabajo en cada etapa para transformar una idea inicial en una experiencia digital funcional y con identidad propia.
     </p>
 
     <ol class="steps">
 
       <li data-r>
-        <b>Conversación</b>
-        <span>Conocer tu idea y entender qué necesitás.</span>
+        <b data-i18n="proc.1.t">Conversación</b>
+        <span data-i18n="proc.1.d">Conocer tu idea y entender qué necesitás.</span>
       </li>
 
       <li data-r>
-        <b>Diseño</b>
-        <span>Definir la identidad visual y la estructura.</span>
+        <b data-i18n="proc.2.t">Diseño</b>
+        <span data-i18n="proc.2.d">Definir la identidad visual y la estructura.</span>
       </li>
 
       <li data-r>
-        <b>Desarrollo</b>
-        <span>Convertir el diseño en un sitio funcional.</span>
+        <b data-i18n="proc.3.t">Desarrollo</b>
+        <span data-i18n="proc.3.d">Convertir el diseño en un sitio funcional.</span>
       </li>
 
       <li data-r>
-        <b>Lanzamiento</b>
-        <span>Revisar los detalles y poner el proyecto en línea.</span>
+        <b data-i18n="proc.4.t">Lanzamiento</b>
+        <span data-i18n="proc.4.d">Revisar los detalles y poner el proyecto en línea.</span>
+      </li>
+
+      <li data-r>
+        <b data-i18n="proc.5.t">Acompañamiento</b>
+        <span data-i18n="proc.5.d">Asistencia y mantenimiento posterior, a coordinar según cada proyecto.</span>
       </li>
 
     </ol>
@@ -190,28 +259,32 @@
 
     <div class="proj__text">
 
-      <p class="tag" data-r>Proyecto destacado</p>
+      <p class="tag" data-r data-i18n="proj.tag">Proyecto destacado</p>
 
-      <h2 data-r>
+      <h2 data-r data-i18n-html="proj.title">
         Las ideas también se convierten <em>en experiencias.</em>
       </h2>
 
-      <p class="lead" data-r>
-        Evermore English Academy es un sitio web desarrollado para una profesora de inglés, con una identidad visual propia y una experiencia pensada para presentar su propuesta educativa.
+      <p class="lead" data-r data-i18n="proj.lead">
+        Evermore English Academy es un proyecto real: el sitio web que desarrollé para una profesora de inglés que da clases particulares virtuales.
       </p>
 
-      <p class="lead" data-r>
-        Incluye un formulario de inscripción dividido en cuatro etapas, con envío de información directamente al correo electrónico.
-      </p>
+      <!-- Testimonio opcional: publicar solo con una cita real y autorizada.
+           Para activarlo, quitar este comentario y agregar sus claves en i18n.js.
+      <blockquote class="quote" data-r>
+        <p data-i18n="proj.quote">“…”</p>
+        <footer data-i18n="proj.quote.by">Nombre · Evermore English Academy</footer>
+      </blockquote>
+      -->
 
       <ul class="chips" data-r>
-        <li>Diseño</li>
-        <li>Desarrollo</li>
-        <li>Formularios</li>
-        <li>Seguridad</li>
+        <li data-i18n="proj.chip.1">Diseño</li>
+        <li data-i18n="proj.chip.2">Desarrollo</li>
+        <li data-i18n="proj.chip.3">Formularios</li>
+        <li data-i18n="proj.chip.4">Seguridad</li>
       </ul>
 
-      <a class="btn" data-r href="https://evermore-english-academy.vercel.app/" target="_blank" rel="noopener noreferrer">
+      <a class="btn" data-r href="https://evermore-english-academy.vercel.app/" target="_blank" rel="noopener noreferrer" data-i18n="proj.btn">
         Explorar proyecto
       </a>
 
@@ -222,27 +295,56 @@
 
       <figure class="browser">
         <div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i></div>
-        <img src="img/proyecto-evermore.webp"
+        <img src="img/proyecto-evermore-640.webp"
+             srcset="img/proyecto-evermore-640.webp 640w, img/proyecto-evermore.webp 1280w"
+             sizes="(max-width: 900px) min(70vw, 500px), (max-width: 1280px) 35vw, 445px"
              alt="Evermore English Academy vista en computadora"
+             data-i18n-attr="alt:proj.alt.pc"
              width="1280" height="800"
              loading="lazy">
       </figure>
 
       <figure class="tablet">
-        <img src="img/proyecto-evermore-tablet.webp"
+        <img src="img/proyecto-evermore-tablet-600.webp"
+             srcset="img/proyecto-evermore-tablet-600.webp 600w, img/proyecto-evermore-tablet.webp 1536w"
+             sizes="(max-width: 900px) min(26vw, 186px), (max-width: 1280px) 13vw, 166px"
              alt="Evermore English Academy vista en tablet"
-             width="768" height="1024"
+             data-i18n-attr="alt:proj.alt.tablet"
+             width="600" height="800"
              loading="lazy">
       </figure>
 
       <figure class="phone">
-        <img src="img/proyecto-evermore-movil.webp"
+        <img src="img/proyecto-evermore-movil-400.webp"
+             srcset="img/proyecto-evermore-movil-400.webp 400w, img/proyecto-evermore-movil.webp 780w"
+             sizes="(max-width: 900px) min(18vw, 130px), (max-width: 1280px) 9.2vw, 115px"
              alt="Evermore English Academy vista en celular"
-             width="390" height="844"
+             data-i18n-attr="alt:proj.alt.phone"
+             width="400" height="896"
              loading="lazy">
       </figure>
 
     </div>
+
+    <!-- Caso de estudio: necesidad, solución, funcionalidades y valor -->
+    <dl class="case" data-r>
+      <div>
+        <dt data-i18n="proj.need.t">La necesidad</dt>
+        <dd data-i18n="proj.need.d">Presentar su propuesta educativa con una identidad visual propia y recibir inscripciones a sus clases.</dd>
+      </div>
+      <div>
+        <dt data-i18n="proj.sol.t">La solución</dt>
+        <dd data-i18n="proj.sol.d">Un sitio a medida que presenta a la profesora, sus clases y su forma de trabajo, con un formulario de inscripción dividido en cuatro etapas y envío de la información directamente al correo electrónico.</dd>
+      </div>
+      <div>
+        <dt data-i18n="proj.feat.t">Funcionalidades</dt>
+        <dd data-i18n="proj.feat.d">Datos de un adulto responsable cuando quien se inscribe es menor de edad, consentimientos, confirmación con resumen por WhatsApp y una sección de opiniones que se revisan antes de publicarse.</dd>
+      </div>
+      <div>
+        <dt data-i18n="proj.val.t">El valor</dt>
+        <dd data-i18n="proj.val.d">Quien visita el sitio conoce la propuesta y puede inscribirse en un solo lugar, y la profesora recibe cada inscripción con la información que necesita para organizar las clases.</dd>
+      </div>
+    </dl>
 
   </div>
 </section>
@@ -259,36 +361,37 @@
       <div class="portrait__img">
         <img src="img/sobre-mi.webp"
              alt="Retrato de quien está detrás de KHARV"
-             width="800"
-             height="1000"
+             data-i18n-attr="alt:about.alt"
+             width="1024"
+             height="1066"
              loading="lazy">
       </div>
     </figure>
 
     <div>
 
-      <p class="tag" data-r>Quién soy</p>
+      <p class="tag" data-r data-i18n="about.tag">Quién soy</p>
 
-      <h2 data-r>
+      <h2 data-r data-i18n-html="about.title">
         Detrás de cada proyecto, <em>una persona.</em>
       </h2>
 
-      <p class="lead" data-r>
+      <p class="lead" data-r data-i18n="about.lead">
         Mi nombre es Francisco y soy quien está detrás de KHARV. Me dedico al diseño y desarrollo web, creando experiencias digitales que combinan estética, funcionalidad y tecnología.
       </p>
 
-      <p class="about__p" data-r>
+      <p class="about__p" data-r data-i18n="about.p1">
         Actualmente estudio la Tecnicatura Universitaria en Programación en la UTN y complemento mi formación con capacitaciones en EducaciónIT.
       </p>
 
-      <p class="about__p" data-r>
+      <p class="about__p" data-r data-i18n="about.p2">
         Trabajo personalmente en cada proyecto, cuidando cada etapa del proceso para convertir ideas en sitios web pensados para cada necesidad.
       </p>
 
       <ul class="chips" data-r>
-        <li>Formación continua</li>
-        <li>Desarrollo a medida</li>
-        <li>Atención personalizada</li>
+        <li data-i18n="about.chip.1">Formación continua</li>
+        <li data-i18n="about.chip.2">Desarrollo a medida</li>
+        <li data-i18n="about.chip.3">Atención personalizada</li>
       </ul>
 
     </div>
@@ -299,26 +402,71 @@
 
 
 
+<!-- ============ PREGUNTAS FRECUENTES ============ -->
+
+<section class="sec" id="preguntas">
+  <div class="wrap">
+
+    <p class="tag" data-r data-i18n="faq.tag">Preguntas frecuentes</p>
+
+    <h2 data-r data-i18n-html="faq.title">
+      Antes de empezar, <em>algunas respuestas.</em>
+    </h2>
+
+    <div class="faq">
+
+      <details data-r>
+        <summary data-i18n="faq.1.q">¿Cómo comienza un proyecto?</summary>
+        <p data-i18n="faq.1.a">Con una conversación por WhatsApp o por correo. Me contás tu idea, qué necesitás y para qué es el sitio, y a partir de ahí vemos cómo darle forma.</p>
+      </details>
+
+      <details data-r>
+        <summary data-i18n="faq.2.q">¿Qué necesito para solicitar una página web?</summary>
+        <p data-i18n="faq.2.a">Alcanza con tener una idea de lo que querés comunicar. Si ya tenés logo, textos o fotos, suman; si todavía no, lo hablamos en la primera conversación.</p>
+      </details>
+
+      <details data-r>
+        <summary data-i18n="faq.3.q">¿El sitio se adapta a celulares?</summary>
+        <p data-i18n="faq.3.a">Sí. Cada sitio se diseña y se adapta para verse y funcionar bien en celulares, tablets y computadoras.</p>
+      </details>
+
+      <details data-r>
+        <summary data-i18n="faq.4.q">¿Puedo tener mi propio dominio?</summary>
+        <p data-i18n="faq.4.a">Sí. El sitio puede publicarse con un dominio propio, por ejemplo tumarca.com. Lo coordinamos en la etapa de lanzamiento.</p>
+      </details>
+
+      <details data-r>
+        <summary data-i18n="faq.5.q">¿Puedo solicitar modificaciones después de la entrega?</summary>
+        <p data-i18n="faq.5.a">Sí. Podés escribirme para pedir cambios o ajustes. El alcance de cada modificación se conversa según el caso.</p>
+      </details>
+
+    </div>
+
+  </div>
+</section>
+
+
+
 <!-- ============ CONTACTO ============ -->
 
 <section class="sec contact" id="contacto">
   <div class="wrap">
 
-    <p class="eyebrow" data-r>
+    <p class="eyebrow" data-r data-i18n="contact.eyebrow">
       Diseño · Desarrollo · Seguridad
     </p>
 
-    <h2 data-r>
+    <h2 data-r data-i18n-html="contact.title">
       ¿Qué imaginás <em>crear?</em>
     </h2>
 
-    <p class="lead" data-r>
+    <p class="lead" data-r data-i18n="contact.lead">
       Toda gran idea empieza con una conversación. Contame qué tenés en mente y empecemos a darle forma.
     </p>
 
     <div class="cta" data-r>
 
-      <a class="btn" data-wa href="#" target="_blank" rel="noopener noreferrer">
+      <a class="btn" data-wa href="#contacto" data-i18n="contact.wa">
         Escribime por WhatsApp
       </a>
 
@@ -339,7 +487,7 @@
 <footer class="ftr">
   <div class="wrap">
 
-    <span>Diseñado y desarrollado por <b>KHARV</b></span>
+    <span data-i18n-html="footer.by">Diseñado y desarrollado por <b>KHARV</b></span>
 
     <a href="https://www.instagram.com/kharv.dev/"
        target="_blank"
