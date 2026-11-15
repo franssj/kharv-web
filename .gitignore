@@ -15,3 +15,9 @@ desktop.ini
 *.psd
 *.ai
 *.fig
+# Herramientas de desarrollo (Playwright para las capturas)
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

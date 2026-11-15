@@ -1,0 +1,12 @@
+{
+  "name": "kharv-web",
+  "private": true,
+  "description": "Herramientas de desarrollo de KHARV (no forman parte de la web publicada).",
+  "type": "module",
+  "scripts": {
+    "capturas": "node scripts/capturas.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}
