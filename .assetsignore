@@ -1,0 +1,43 @@
+# Archivos internos: no se publican en Cloudflare (misma sintaxis que .gitignore).
+# _headers no va en esta lista: Cloudflare lo necesita para aplicar las cabeceras.
+.git
+.gitignore
+.gitattributes
+.github
+.assetsignore
+.claude
+.vscode
+.idea
+.wrangler
+wrangler.jsonc
+vercel.json
+.vercel
+README.md
+CLAUDE.md
+node_modules
+
+# Herramientas de desarrollo (Playwright y capturas)
+package.json
+package-lock.json
+scripts
+test-results
+playwright-report
+blob-report
+playwright
+
+# Claves y variables de entorno
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+
+# Archivos del sistema, backups y originales
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.bak
+*.zip
+*.psd
+*.ai
+*.fig

@@ -25,7 +25,7 @@ const PROJECTS = [
     sections: [{ name: 'cotizador', heading: 'Solicitar presupuesto' }, { name: 'zonas', heading: 'Zonas de cobertura' }]
   },
   {
-    slug: 'kharv', url: 'https://kharv-web.vercel.app/',
+    slug: 'kharv', url: 'https://kharv.com.ar/',
     sections: [{ name: 'servicios', id: 'servicios' }, { name: 'proceso', id: 'proceso' }]
   }
 ];

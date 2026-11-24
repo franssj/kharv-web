@@ -1,0 +1,7 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kharv-web",
+  "compatibility_date": "2026-11-19",
+  "observability": { "enabled": true },
+  "assets": { "directory": ".", "not_found_handling": "404-page" }
+}

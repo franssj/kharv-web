@@ -9,7 +9,7 @@ El objetivo del sitio es presentar los servicios y los proyectos, y llevar al vi
 - HTML, CSS y JavaScript sin frameworks y sin build. La web publicada no tiene dependencias.
 - Animaciones con **GSAP 3.14.2 + ScrollTrigger**, servidos en local desde `js/vendor/gsap-3.14.2/` (sin CDN, para no ampliar la CSP).
 - `package.json` existe solo para herramientas de desarrollo: **Playwright 1.64.1** (devDependency, usa el Chrome instalado con `channel: 'chrome'`, no descarga navegadores). No forma parte de la web publicada.
-- Hosting en Vercel. `vercel.json` solo define headers de seguridad. `.vercelignore` deja fuera del deploy `package.json`, `package-lock.json`, `node_modules/`, `scripts/` y `CLAUDE.md`.
+- Hosting en Cloudflare Workers (assets estáticos), configurado en `wrangler.jsonc`. `_headers` define los headers de seguridad. `.assetsignore` deja fuera del deploy los archivos internos; sumar ahí todo archivo nuevo que no sea parte de la web. Cloudflare sirve las páginas sin extensión (`/proyectos/kharv.html` redirige a `/proyectos/kharv`): canonical, `og:url` y sitemap van sin `.html`.
 - Fuentes de Google Fonts: **Lora** (títulos) e **Inter** (texto).
 - Imágenes en `img/`: fotos en `.webp`, logos e íconos en `.png`/`.ico`.
 
@@ -17,7 +17,7 @@ El objetivo del sitio es presentar los servicios y los proyectos, y llevar al vi
 
 | Archivo | Función |
 |---|---|
-| `index.html` | Todo el contenido, en español. Secciones en orden: `#inicio`, `#servicios`, `#seguridad`, `#proceso`, `#quien-soy`, `#preguntas` (FAQ, sin link en el menú), `#proyectos`, `#contacto` y footer. `#proyectos` es una grilla `.works` con 3 tarjetas `.pcard` (KHARV, Evermore, Transportes Julio), todas con estado "Terminado", chips de tecnologías y "Ver caso →" hacia su página en `proyectos/`. El botón "Ver proyecto" del hero apunta a `#proyectos`. En el `<head>`: canonical, Open Graph (`img/og-kharv-3.jpg`, 2400×1260 sin grano para que resista la recompresión, composición centrada para que sobreviva al recorte cuadrado de WhatsApp; si se rehace, usar un nombre nuevo para evitar el caché) y JSON-LD `ProfessionalService`. URL pública: `https://kharv-web.vercel.app/`. |
+| `index.html` | Todo el contenido, en español. Secciones en orden: `#inicio`, `#servicios`, `#seguridad`, `#proceso`, `#quien-soy`, `#preguntas` (FAQ, sin link en el menú), `#proyectos`, `#contacto` y footer. `#proyectos` es una grilla `.works` con 3 tarjetas `.pcard` (KHARV, Evermore, Transportes Julio), todas con estado "Terminado", chips de tecnologías y "Ver caso →" hacia su página en `proyectos/`. El botón "Ver proyecto" del hero apunta a `#proyectos`. En el `<head>`: canonical, Open Graph (`img/og-kharv-3.jpg`, 2400×1260 sin grano para que resista la recompresión, composición centrada para que sobreviva al recorte cuadrado de WhatsApp; si se rehace, usar un nombre nuevo para evitar el caché) y JSON-LD `ProfessionalService`. URL pública: `https://kharv.com.ar/`. |
 | `styles.css` | Tokens en `:root`, componentes y responsive. Corta en 1240, 1100, 1000, 900, 820, 800, 700, 600 y 480 px. Respeta `prefers-reduced-motion`. |
 | `script.js` | Configuración pública de contacto (`WHATSAPP_NUMBER`, `MAIL_TO` y `MESSAGES` con los mensajes en `es`/`en`). Arma los links `[data-wa]` y `#mailBtn` (Gmail en escritorio, `mailto:` en móvil) y los actualiza con el evento `kharv:lang`. Además oculta imágenes rotas de `main`, pone el header sólido al scrollear, marca con `has-more-start`/`has-more-end` si la fila del menú móvil tiene secciones ocultas, la animación de entrada `[data-r]` y el resaltado de la sección activa en el menú. |
 | `i18n.js` | Selector ES/EN. Diccionario `EN` por clave. El HTML marca cada texto con `data-i18n="clave"`, `data-i18n-html="clave"` (si lleva `<em>`, `<br>` o `<b>`) o `data-i18n-attr="alt:clave; content:otra"`. Guarda el español original, aplica el inglés, lo recuerda en `localStorage` (`kharv-lang`) y emite `kharv:lang`. Se carga después de `script.js`. Si falta una clave, avisa en la consola. |
@@ -25,10 +25,10 @@ El objetivo del sitio es presentar los servicios y los proyectos, y llevar al vi
 | `js/animaciones.js` | Animaciones GSAP dentro de `gsap.matchMedia('(prefers-reduced-motion: no-preference)')`: títulos `h2[data-r]`, tarjetas `.pcard`, `.cs-title` y figuras de `.gallery`. Mientras corre agrega `gsap-on` a `<html>`, y el CSS anula `data-r` en esos elementos para que no se animen dos veces. Orden de carga (todos `defer`): `script.js`, `i18n.js`, `gsap.min.js`, `ScrollTrigger.min.js`, `animaciones.js`. El CSS suma `@view-transition` entre páginas, desactivado con movimiento reducido. |
 | `js/vendor/gsap-3.14.2/` | `gsap.min.js` y `ScrollTrigger.min.js` locales, versión exacta. No editar. |
 | `scripts/capturas.mjs` | `npm run capturas`: con Playwright captura los sitios en vivo (PC 1440×900, celular 390×844 a 2x y 2 secciones de PC por proyecto), espera fuentes, imágenes y animaciones, y exporta WebP (más una versión a la mitad de ancho) y el `portada-pc.jpg` para Open Graph en `img/proyectos/`. Volver a correrlo después de publicar cambios visibles en cualquiera de los 3 sitios. |
-| `404.html` | Página de error con la estética de Contacto. Rutas absolutas (`/styles.css`, `/img/...`) y `noindex`. Vercel la sirve sola. |
+| `404.html` | Página de error con la estética de Contacto. Rutas absolutas (`/styles.css`, `/img/...`) y `noindex`. Cloudflare la sirve con `not_found_handling: 404-page`. |
 | `robots.txt`, `sitemap.xml` | SEO técnico. El sitemap incluye la home y los 3 casos; actualizar `lastmod` al publicar cambios de contenido. |
 | `img/proyectos/<slug>/` | Capturas generadas por `npm run capturas` (`kharv`, `evermore`, `transportes-julio`): `portada-pc.webp`/`-720`, `portada-pc.jpg` (OG), `celular.webp`/`-390` y dos secciones por proyecto, cada una con su versión `-720`. Se eligen con `srcset`/`sizes`. La portada va en la tarjeta y en la captura principal del caso; celular y secciones, en la galería. |
-| `vercel.json` | CSP estricta (`script-src 'self'`, sin inline), `nosniff`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'none'`. |
+| `_headers` | CSP estricta (`script-src 'self'`, sin inline), `nosniff`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'none'`. |
 
 ## Convenciones
 
@@ -38,7 +38,7 @@ El objetivo del sitio es presentar los servicios y los proyectos, y llevar al vi
 - Hooks por atributos `data-*`: `data-r` (animación de entrada), `data-wa` (WhatsApp), `data-lang`.
 - Proyecto nuevo: tarjeta `.pcard` en `#proyectos`, página en `proyectos/` copiando la estructura de las existentes, entrada en `PROJECTS` de `scripts/capturas.mjs`, claves i18n, URL en `sitemap.xml` y ajustar la cadena de "Siguiente proyecto".
 - El texto en español vive en el HTML. **Todo texto visible nuevo o modificado lleva su clave `data-i18n*` y su traducción en el diccionario `EN` de `i18n.js`.**
-- Nada de scripts ni estilos inline: la CSP los bloquea. Cualquier recurso externo nuevo exige actualizar la CSP de `vercel.json`, y solo con mi autorización.
+- Nada de scripts ni estilos inline: la CSP los bloquea. Cualquier recurso externo nuevo exige actualizar la CSP de `_headers`, y solo con mi autorización.
 - Imágenes con `width`/`height`, `alt` descriptivo y `loading="lazy"` cuando están debajo del primer pantallazo. Los links externos llevan `rel="noopener noreferrer"`.
 
 ## Identidad visual (respetar estrictamente)
@@ -68,7 +68,7 @@ El objetivo del sitio es presentar los servicios y los proyectos, y llevar al vi
 10. Priorizás seguridad, rendimiento, accesibilidad, mantenibilidad y calidad visual.
 11. Me explicás los cambios importantes y las decisiones técnicas con claridad, sin extenderte de más.
 12. Respetás estrictamente la identidad visual y los objetivos de KHARV.
-13. Todo cambio de JavaScript debe respetar la CSP definida en `vercel.json`. No introduzcas scripts ni estilos inline. Cualquier modificación que requiera ampliar la CSP debe consultarme antes.
+13. Todo cambio de JavaScript debe respetar la CSP definida en `_headers`. No introduzcas scripts ni estilos inline. Cualquier modificación que requiera ampliar la CSP debe consultarme antes.
 
 14. Antes de modificar textos, selectores o estructuras HTML, comprobá su correspondencia con la tabla de traducciones de `i18n.js`. No elimines ni desincronices traducciones existentes.
 

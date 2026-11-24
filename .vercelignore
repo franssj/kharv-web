@@ -1,6 +1,0 @@
-# Herramientas de desarrollo: no se publican en Vercel
-package.json
-package-lock.json
-node_modules/
-scripts/
-CLAUDE.md
