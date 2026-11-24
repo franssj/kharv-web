@@ -17,7 +17,7 @@ const QUALITY = 0.88;
 /* Secciones: se buscan por id o por el texto de su título */
 const PROJECTS = [
   {
-    slug: 'evermore', url: 'https://evermore-english-academy.vercel.app/',
+    slug: 'evermore', url: 'https://evermoreacademy.com.ar/',
     sections: [{ name: 'inscripcion', id: 'inscripcion' }, { name: 'servicios', id: 'servicios' }]
   },
   {
